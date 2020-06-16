@@ -9,9 +9,9 @@ import sys
 
 app= Flask(__name__)
 app.config['MONGO_DBNAME'] = 'offtop-kafka-mongodb'
-app.config['MONGO_URI'] = ''
-app.config['MONGO_USER'] = ''
-app.config['MONGO_PASSWORD'] = ''
+app.config['MONGO_URI'] = 'mongodb+srv://off-top:<offtoppassword>@off-top-kafka-mogsf.mongodb.net/off-top'
+app.config['MONGO_USER'] = 'off-top'
+app.config['MONGO_PASSWORD'] = 'offtoppassword'
 mongo.init_app(app)
 
 def conumer():
@@ -22,12 +22,22 @@ def conumer():
         enable_auto_commit= True,
         group_id= 'my-group',
         value_deserializer= lambda x: loads(x.decode('utf-8')))
+    #try:
+    for message in consumer:
+        consumed_value= loads(message.value.decode('utf-8'))
+        postData(consumed_value)
+        print("Subscribing to Session Alerts:\nMessage:", consumed_value)
 
-@app.route('/consume', methods=['POST'])
-def postData():
-    collection= mongo.db.sessionAlerts
-    
+#@app.route('/consume', methods=['POST'])
+def postData(value):
+    session_alerts= mongo.db.sessionAlerts
+    inserted= session_alerts.insert(value)
+
 
 if __name__ == '__main__':
-    consumer()
     app.run(debug= True)
+
+    try:
+        consumer()
+    except KeyboardInterrupt:
+        sys.exit()
