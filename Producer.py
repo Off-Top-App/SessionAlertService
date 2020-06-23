@@ -9,6 +9,9 @@ from flask_cors import CORS, cross_origin
 from flask_pymongo import PyMongo
 import sys
 from werkzeug.utils import cached_property
+import logging
+from Event import Event
+from _datetime import datetime
 
 
 app= Flask(__name__)
@@ -24,13 +27,12 @@ def producer():
         value_serializer=lambda x: dumps(x).encode('utf-8'))
     while True:
         if(not oneZero()):
-            #message= {'user_id': random.randint(1,111), 'focus_score': oneZero(), 'time': str(datetime.utcnow())}
-            message= Event(random.randint(1,111), oneZero(), str(datetime.utcnow()))
+            message= Event(random.randint(1,111), oneZero(), str(datetime.utcnow())).__dict__
             data= dumps(message)
             producer.send('OutgoingFocusAlert', value= data)
             producer.flush()
             print("Data:", data)
-            sleep(3)
+            sleep(20)
 
 def oneZero():
     rand= random.randint(0,1)
@@ -40,7 +42,6 @@ def oneZero():
         return True
 
 if __name__ == '__main__':
-    app.run(debug=True)
     logging.basicConfig(
         format='%(asctime)s.%(msecs)s:%(name)s:' +
                '%(levelname)s:%(process)d:%(message)s',
