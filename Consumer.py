@@ -38,10 +38,8 @@ def startConsumer():
         postData(consumed_value)
         print("Subscribing to Session Alerts:\nMessage:", consumed_value)
 
-#@app.route('/consume', methods=['POST'])
 def postData(data):
     session_alerts= mongo.db.sessionAlerts
-    #print("this is value", value[10:14])
     value= json.loads(data)
     inserted= session_alerts.insert({'user_id': value['user_id'], 'focus_score': value['focus_score'], 'time': value['time']})
     #inserted= session_alerts.insert_one(value)

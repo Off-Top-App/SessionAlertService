@@ -16,7 +16,7 @@ from _datetime import datetime
 
 app= Flask(__name__)
 app.config['MONGO_DBNAME'] = 'offtop-kafka-mongodb'
-app.config['MONGO_URI'] = 'mongodb+srv://off-top:<offtoppassword>@off-top-kafka-mogsf.mongodb.net/off-top'
+app.config['MONGO_URI'] = 'mongodb+srv://off-top:offtoppassword@off-top-kafka-mogsf.mongodb.net/off-top'
 app.config['MONGO_USER'] = 'off-top'
 app.config['MONGO_PASSWORD'] = 'offtoppassword'
 mongo = PyMongo()
