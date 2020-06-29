@@ -24,7 +24,7 @@ def producer():
         value_serializer=lambda x: json.dumps(x).encode('utf-8'))
     while True:
         if(not getRandomFocusScore()):
-            focusAlert= Event(random.randint(1,111), oneZero(), str(datetime.utcnow())).__dict__
+            focusAlert= Event(random.randint(1,111), getRandomFocusScore(), str(datetime.utcnow())).__dict__
             data= json.dumps(focusAlert)
             producer.send('OutgoingFocusAlert', value= data)
             producer.flush()
