@@ -1,17 +1,14 @@
 from kafka import KafkaProducer
-from json import dumps
-from time import sleep
+import json
 from pymongo import MongoClient
-from json import loads
 import random
-from flask import Flask, flash, render_template, request, jsonify
-from flask_cors import CORS, cross_origin
+import logging
 from flask_pymongo import PyMongo
 import sys
 from werkzeug.utils import cached_property
-import logging
 from Event import Event
 from _datetime import datetime
+from time import sleep
 
 
 app= Flask(__name__)
@@ -24,17 +21,17 @@ mongo.init_app(app)
 
 def producer():
     producer= KafkaProducer(bootstrap_servers=['localhost:9092'],
-        value_serializer=lambda x: dumps(x).encode('utf-8'))
+        value_serializer=lambda x: json.dumps(x).encode('utf-8'))
     while True:
-        if(not oneZero()):
-            message= Event(random.randint(1,111), oneZero(), str(datetime.utcnow())).__dict__
-            data= dumps(message)
+        if(not getRandomFocusScore()):
+            focusAlert= Event(random.randint(1,111), oneZero(), str(datetime.utcnow())).__dict__
+            data= json.dumps(focusAlert)
             producer.send('OutgoingFocusAlert', value= data)
             producer.flush()
             print("Data:", data)
             sleep(20)
 
-def oneZero():
+def getRandomFocusScore():
     rand= random.randint(0,1)
     if (rand == 0):
         return False
@@ -48,7 +45,5 @@ if __name__ == '__main__':
         level=logging.INFO)
     try:
         producer()
-        print("We made it.")
     except KeyboardInterrupt:
-        print("We made it here.")
         sys.exit()
