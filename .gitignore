@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+kafka-venv/*
+ConsumerX/
+ProducerX/
+
 # Distribution / packaging
 .Python
 build/
