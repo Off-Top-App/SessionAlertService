@@ -3,7 +3,9 @@ from pymongo import MongoClient
 from flask_pymongo import PyMongo
 import json
 from flask_pymongo import PyMongo
-from Services.SessionAlertServices import postAlertData
+from Services.SessionAlertService import postAlertData
+from flask import Flask
+import logging
 
 app= Flask(__name__)
 app.config['MONGO_DBNAME'] = 'offtop-kafka-mongodb'

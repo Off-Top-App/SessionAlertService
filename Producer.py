@@ -9,6 +9,7 @@ from werkzeug.utils import cached_property
 from Event import Event
 from _datetime import datetime
 from time import sleep
+from flask import Flask
 
 
 app= Flask(__name__)
